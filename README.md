@@ -1,2 +1,2 @@
 # MLTF-designer
-Framework for MLTF design in Python
+Framework for MLTF design implemented in Python
