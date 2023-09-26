@@ -1,2 +1,2 @@
 # MLTF-designer
-Framework for MLTF design implemented in Python
+Framework for multi-layer thin film design
