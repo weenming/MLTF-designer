@@ -1,2 +1,2 @@
 # MLTF-designer
-Framework for multi-layer thin film design
+Framework for multi-layer thin film (MLTF) design
