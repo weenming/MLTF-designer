@@ -2,7 +2,9 @@
 
 ## Overview
 This project is a code framework for multi-layer thin film (MLTF) design introduced in our review paper on MLTF Design.
-It simulates the optical response of thin films based on the transfer matrix method and our new algorithm to both temporally and spatially efficiently evaluate the gradient. The calculation of the gradient of a spectrum with $1000$ wavelength points w.r.t $100$ layers' film is in the order of $10^{-2}$ s which to our knowledge is comparable to SOTA performance. Moreover, inspired by NeuralODE we alleviated the memory barrier in constructing the computation graph, and thus the calculation of the gradient can be easily scaled up to films with thousands of layers.
+It simulates the optical response of thin films based on the transfer matrix method and our new algorithm to both temporally and spatially efficiently evaluate the gradient. 
+
+In this framework, the calculation of the gradient is accelerated with CUDA. The gradient of a spectrum with $1000$ wavelength points w.r.t $100$ layers' film can be evaluated in the order of $10^{-2}$ s which enables the design of complicated MLTF. Moreover, inspired by the adjoint method we alleviated the memory barrier in constructing the computation graph, and thus the calculation of the gradient can be easily scaled up to films with thousands of layers.
 
 Based on the above algorithms we implemented the classical needle method. A new freeform design scheme is also provided, which allows the design of inhomogeneous films. Additionally, a novel thin layer removal algorithm with a lower impact on the performance is implemented.
 
