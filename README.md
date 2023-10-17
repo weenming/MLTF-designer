@@ -2,18 +2,20 @@
 
 ## Overview
 This project is a code framework for multi-layer thin film (MLTF) design introduced in our review paper on MLTF Design.
-It simulates the optical response of thin films based on transfer matrix method and their corresponding auto-differentiation is implemented both temporally and spatially efficiently to evaluate the gradient. The calculation of the gradient of a spectrum with $1000$ wavelength points w.r.t $100$ layers' film is in the order of $10^{-2}$ s which to our knowedge is comparable to SOTA performance. Moreover, inspired by NeuralODE we alliviated the memory barrier in constructing the computation graph, and thus the calculation of the gradient can be easily scaled up to films with thoudsands of layers.
+It simulates the optical response of thin films based on the transfer matrix method and our new algorithm to both temporally and spatially efficiently evaluate the gradient. 
 
-Based on the above algorithms we implementated of the classical needle method. A new freeform design scheme is also provided, which allows the design of inhomogeneous films. Additionally, a novel thin layer removal algorithm with lower impact on the performance is implemented.
+In this framework, the calculation of the gradient is paralleled on GPU with CUDA. The gradient of a spectrum with $1000$ wavelength points w.r.t $100$ layers' film can be evaluated in the order of $10^{-2}$ s which enables the design of complicated MLTF. <!--Moreover, inspired by the adjoint method we alleviated the memory barrier in constructing the computation graph when scaling up to films with thousands of layers.-->
+
+<!--Based on the above fundamental algorithms we implemented the classical needle design method. A new freeform design scheme is also provided, which allows the design of inhomogeneous films. Additionally, a novel thin layer removal algorithm with a lower impact on the performance is implemented. -->
 
 The aim of this project is to
 
 - increase the efficiency of traditional algorithms
-- search for the underlining rules determining the design results.
-- find ways to better designs multi-layer films.
+- Search for the underlying rules determining the design results.
+- find ways to better design multi-layer films.
   - lower total optical thickness
   - lower layer numbers
-  - fewer "too thin" layers which is impractical in realistic manufacture.
+  - fewer "too thin" layers which are impractical in realistic manufacture.
 ## Usage
 To get started with the Thin-Film-Design library, follow these steps:
 
@@ -52,27 +54,27 @@ Note that the version of cudatoolkit should match that of the version of the dri
 
 - `script`
   - `tmm` contains functions related to TMM
-    - `get_insert_jacobi.py` (deprecated) Calculate insertion Jacobi matrix for gradient in needle method using TFNN
-    - `get_jacobi.py` Calculate Jacobi matrix in gradient descent using TFNN. Gradient w.r.t. thicknesses.
-    - `get_jacobi_adjoint.py` Calculate Jacobi matrix in gradient descent using TFNN. Back propagation is implemented using adjoint metghod. Gradient w.r.t.thicknesses.
+    - `get_insert_jacobi.py` (deprecated) Calculate insertion Jacobi matrix for the gradient in needle method using TFNN
+    - `get_jacobi.py` Calculate the Jacobi matrix in gradient descent using TFNN. Gradient w.r.t. thicknesses.
+    - `get_jacobi_adjoint.py` Calculate the Jacobi matrix in gradient descent using TFNN. Backpropagation is implemented using the adjoint method. Gradient w.r.t.thicknesses.
     - `get_n.py` Calculate and set refractive indices in Film instances
     - `get_spectrum.py` Calculate spectrum from a film instance
     - `tmm_cpu`
-      - arxived tmm functions using cpu
+      - archived tmm functions using cpu
   - `optimizer` implements different optimization methods
-    - `LM_gradient_descent` executes gradeint decent by optimizing thicknesses.
-    - `adam` Adam gradien descent by optimizing thicknesses. Implemented SGD by randomly selecting both spectrum and wavelength points.
-    - `needle_insert` executes the insertion process given insertion gradient
-  - `utils` contains general functions, tools for analysis etc.
+    - `LM_gradient_descent` executes gradient descent by optimizing thicknesses.
+    - `adam` Adam gradient descent by optimizing thicknesses. Implemented SGD by randomly selecting both spectrum and wavelength points.
+    - `needle_insert` executes the insertion process given the insertion gradient
+  - `utils` contains general functions, tools for analysis, etc.
     - `get_n` Gets refractive indices of a material at specified wavelengths.
     - `loss` Implements loss functions. 
-    - `substitute` Remove layers that are too thin to be practical. Adjust the thicknesse of adjacent layers s.t. $l_1$ deviation in $\vec{E}$ is minimized in first order approximation of the replaced layers being thin. 
+    - `substitute` Remove layers that are too thin to be practical. Adjust the thickness of adjacent layers s.t. $l_1$ deviation in $\vec{E}$ is minimized in the first-order approximation of the replaced layers being thin. 
     - `structure` function to plot the structure of a `Film` instance
   - `design.py` Implements Design objects.
   - `film.py` Implements Film objects.
   - `spectrum` Implements Spectrum objects
   
-`main` files implements
+`main` files implement
 
 - LM descent
 - needle insertion iterations
