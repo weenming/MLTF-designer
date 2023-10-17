@@ -12,11 +12,11 @@ def get_jacobi(wls, d, materials, n_indices=[], theta0 = 7.):
     :param wls: wavelengths of the target spectrum
     :param d: multi-layer thicknesses after last iteration
     :param n_parameters: refraction indices after last iteration
-    :return: [zN by (3M)) matrix], N是采样的波长数目，z=2因为T和R都测了；M是层数，按照厚度，partial/partial n 的实部和虚部排列
+    :return: [zN by (3M)) matrix], N是采样的波长数目, z=2因为T和R都测了, M是层数, 按照厚度, partial/partial n 的实部和虚部排列
     """
     # 薄膜数，不算基底
     layer_number = d.shape[0]
-    # 入射角, 0°
+    # 入射角, 0deg
     theta0 = theta0 / 180 * pi
 
     # 遍历所有的待测波长 存到2N(R,T)*3M(d,n,k) jacobi matrix 里

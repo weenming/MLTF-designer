@@ -1,8 +1,20 @@
 from numpy import *
+import numpy as np
 from tmm.tmm_cpu.get_n import get_n
 
 
-def get_spectrum(wls, d, materials, n_indices=[], theta0=7., substrate=None):
+def get_spectrum(
+        spectrum,
+        wls,
+        d,
+        n_layers,
+        n_sub,
+        n_inc,
+        inc_ang,
+        s_ratio=1,
+        p_ratio=1
+    ):
+    #    wls, d, materials, n_indices=[], theta0=7., substrate=None):
     """
     This function calculates the reflectance and transmittance spectrum of a non-polarized light at 0 degrees
 
@@ -10,17 +22,18 @@ def get_spectrum(wls, d, materials, n_indices=[], theta0=7., substrate=None):
     :param d: multi-layer thicknesses after last iteration
     :param n_indices: denotes the dispersion details of a layer=
     :param materials: material of a certain layer
-    :return: [zN*1 by 1 matrix], N是采样的波长数目，z=2因为T和R都测了；M是层数，厚度，partial/partial n 的实部和虚部
+    :return: [zN*1 by 1 matrix], N是采样的波长数目, z=2因为T和R都测了, M是层数, 厚度, partial/partial n 的实部和虚部
     """
     # 薄膜数，不算基底
     layer_number = d.shape[0]
     theta0 = theta0 / 180 * pi
+    n_all = np.vstack((n_inc, n_layers, n_sub))
     # 遍历所有的待测波长，存到2N*1 spectrum里(先R再T)。
     spectrum = zeros((2 * wls.shape[0], 1))
     for wl_index in range(wls.shape[0]):
         # 折射率 返回layer_number+2个数字，因为基底和空气也在里面
         wl = wls[wl_index]
-        n = get_n(wl, materials, substrate=substrate)
+        n = n_all[wl_index, :]
         # 每一层的角度，theta[k]=theta_k,长度是layer_number+2
         cosis = zeros((layer_number + 2, 1), dtype='complex_')
         for i in range(layer_number + 2):
